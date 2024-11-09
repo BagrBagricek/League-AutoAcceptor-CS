@@ -1,0 +1,10 @@
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\bin\Release\League AutoAcceptor.exe.config
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\bin\Release\League AutoAcceptor.exe
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\bin\Release\League AutoAcceptor.pdb
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League AutoAcceptor.csproj.AssemblyReference.cache
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League_AutoAcceptor.Form1.resources
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League_AutoAcceptor.Properties.Resources.resources
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League AutoAcceptor.csproj.GenerateResource.cache
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League AutoAcceptor.csproj.CoreCompileInputs.cache
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League AutoAcceptor.exe
+C:\Users\janko\source\repos\League AutoAcceptor\League AutoAcceptor\obj\Release\League AutoAcceptor.pdb
