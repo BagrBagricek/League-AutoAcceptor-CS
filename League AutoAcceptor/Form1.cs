@@ -11,10 +11,12 @@ using System.Security.Principal;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 namespace League_AutoAcceptor
 {
     public partial class Form1 : Form
     {
+        
         public static bool IsAdministrator()
         {
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
@@ -25,10 +27,11 @@ namespace League_AutoAcceptor
         }
         public static bool IsGameRunning()
         {
-            Process[] pname = Process.GetProcessesByName("LeagueClient.exe");
-            if (pname.Length == 0)
+            Process[] pname = Process.GetProcessesByName("LeagueClientUx");
+            if (pname.Length != 0)
             {
                 return true;
+
 
             }
             else
@@ -36,6 +39,14 @@ namespace League_AutoAcceptor
                 return false;
             }
         }
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
@@ -62,7 +73,7 @@ namespace League_AutoAcceptor
         {
             var process = Process.GetProcessesByName(processName);
             if (process.Length == 0)
-                throw new ArgumentException("Process not found.");
+                return (0, 0, 0, 0);
 
             IntPtr windowHandle = process[0].MainWindowHandle;
 
@@ -133,7 +144,7 @@ namespace League_AutoAcceptor
             label9.ForeColor = Color.White;
             label10.ForeColor = Color.White;
             label11.ForeColor = Color.White;
-            
+
             if (IsAdministrator())
             {
                 label4.ForeColor = Color.Lime;
@@ -173,7 +184,7 @@ namespace League_AutoAcceptor
                 }
             }
             Thread backgroundThread = new Thread(new ThreadStart(BackgroundProcess));
-            backgroundThread.IsBackground = true; 
+            backgroundThread.IsBackground = true;
             backgroundThread.Start();
 
 
@@ -181,13 +192,15 @@ namespace League_AutoAcceptor
         }
         private void BackgroundProcess()
         {
+            label11.ForeColor = Color.White;
             label8.ForeColor = Color.Red;
             label8.Text = "Not Found";
             int x = GetWindowInfo().X + (GetWindowInfo().width / 2);
             int y = GetWindowInfo().Y + ((GetWindowInfo().height / 10) * 8);
+            POINT cursorPos;
             while (true)
             {
-                
+
                 Color color = GetPixelColor(x, y);
                 label11.Text = color.ToString();
                 Color targetColor = Color.FromArgb(255, 30, 37, 42);
@@ -195,34 +208,50 @@ namespace League_AutoAcceptor
                 Thread.Sleep(1);
                 if (color.ToArgb() == targetColor.ToArgb())
                 {
+
+                    GetCursorPos(out cursorPos);
+                    label11.ForeColor = Color.Lime;
                     SetCursorPos(x, y);
                     Thread.Sleep(5);
                     mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
                     Thread.Sleep(5);
                     mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-                     
-               
-
+                    Thread.Sleep(5);
+                    SetCursorPos(cursorPos.X, cursorPos.Y);
                     label8.ForeColor = Color.Lime;
                     label8.Text = "Found!";
-                    DialogResult result = MessageBox.Show(
-                    "Do you want to continue?",   // Message text
-                    "Confirmation",              // Title text
-                    MessageBoxButtons.OKCancel,  // Buttons to display
-                    MessageBoxIcon.Question);   // Icon to display
-
-                    // Handle the result of the dialog
-                    if (result == DialogResult.OK)
+                    if (checkBox1.Checked)
                     {
                         BackgroundProcess();
                     }
-                    else if (result == DialogResult.Cancel)
+                    else
                     {
-                        Environment.Exit(0);
+                        DialogResult result = MessageBox.Show(
+                    "Do you want to continue?",
+                    "Confirmation",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Question);
+
+                        if (result == DialogResult.OK)
+                        {
+                            BackgroundProcess();
+                        }
+                        else if (result == DialogResult.Cancel)
+                        {
+                            Environment.Exit(0);
+                        }
                     }
-                    
+
+
                 }
             }
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+      
     }
 }
